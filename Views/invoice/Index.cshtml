@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model IEnumerable<itRoot.Models.inVoice>
+@{
+    ViewData["Title"] = "Invoices";
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+        </div>
+        <div class="col-md-4 text-right">
+            <a asp-action="Create" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i> @localizer["CreateNewInvoice"]
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>@localizer["InvoiceList"]</h4>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.totalAmount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.inVoiceDate)
+                                </th>
+                             </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>$@Html.DisplayFor(modelItem => item.totalAmount)</strong>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.inVoiceDate)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> @localizer["Noinvoicesfound"]
+                            <a asp-action="Create" class="btn btn-primary btn-sm ml-2">
+                                <i class="fas fa-plus"></i> @localizer["Createyourfirstinvoice"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>@localizer["Summary"]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>@localizer["TotalInvoices"]</strong>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong>@Model.Count()</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>@localizer["TotalAmount"]</strong>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong>$@Model.Sum(x => x.totalAmount).ToString("F2")</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
